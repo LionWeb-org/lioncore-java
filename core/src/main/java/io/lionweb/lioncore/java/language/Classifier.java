@@ -1,6 +1,7 @@
 package io.lionweb.lioncore.java.language;
 
 import io.lionweb.lioncore.java.model.impl.M3Node;
+import io.lionweb.lioncore.java.self.LionCore;
 import io.lionweb.lioncore.java.serialization.data.MetaPointer;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,8 +24,13 @@ import javax.annotation.Nullable;
  */
 public abstract class Classifier<T extends M3Node> extends LanguageEntity<T>
     implements NamespaceProvider {
+
+  public Classifier(@Nonnull LionCore.Version lioncoreVersion) {
+    super(lioncoreVersion);
+  }
+
   public Classifier() {
-    super();
+    this(LionCore.Version.CURRENT);
   }
 
   public Classifier(@Nullable Language language, @Nullable String name, @Nonnull String id) {
@@ -33,6 +39,11 @@ public abstract class Classifier<T extends M3Node> extends LanguageEntity<T>
 
   public Classifier(@Nullable Language language, @Nullable String name) {
     super(language, name);
+  }
+
+  public Classifier(
+      @Nullable Language language, @Nullable String name, LionCore.Version lioncoreVersion) {
+    super(language, name, lioncoreVersion);
   }
 
   public @Nullable Feature getFeatureByName(@Nonnull String name) {

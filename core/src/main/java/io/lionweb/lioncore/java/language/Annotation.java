@@ -1,7 +1,6 @@
 package io.lionweb.lioncore.java.language;
 
 import io.lionweb.lioncore.java.model.ReferenceValue;
-import io.lionweb.lioncore.java.self.LionCore;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -117,10 +116,5 @@ public class Annotation extends Classifier<Annotation> {
       combineFeatures(result, superInterface.allFeatures());
     }
     return result;
-  }
-
-  @Override
-  public Concept getClassifier() {
-    return LionCore.getAnnotation();
   }
 }

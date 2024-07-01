@@ -35,6 +35,14 @@ public class Property extends Feature<Property> {
     return property;
   }
 
+  public static Property createRequired(
+      @Nullable String name, @Nullable DataType type, LionCore.Version lioncoreVersion) {
+    Property property = new Property(name, null, lioncoreVersion);
+    property.setOptional(false);
+    property.setType(type);
+    return property;
+  }
+
   public static Property createOptional(
       @Nullable String name, @Nullable DataType type, @Nonnull String id) {
     Objects.requireNonNull(id, "id should not be null");
@@ -46,8 +54,16 @@ public class Property extends Feature<Property> {
 
   public static Property createRequired(
       @Nullable String name, @Nullable DataType type, @Nonnull String id) {
+    return createRequired(name, type, id, LionCore.Version.CURRENT);
+  }
+
+  public static Property createRequired(
+      @Nullable String name,
+      @Nullable DataType type,
+      @Nonnull String id,
+      LionCore.Version lioncoreVersion) {
     Objects.requireNonNull(id, "id should not be null");
-    Property property = new Property(name, null, id);
+    Property property = new Property(name, null, id, lioncoreVersion);
     property.setOptional(false);
     property.setType(type);
     return property;
@@ -62,9 +78,24 @@ public class Property extends Feature<Property> {
     super(name, container, id);
   }
 
+  public Property(
+      @Nullable String name,
+      @Nullable Classifier container,
+      @Nonnull String id,
+      LionCore.Version lioncoreVersion) {
+    // TODO verify that the container is also a NamespaceProvider
+    super(name, container, id, lioncoreVersion);
+  }
+
   public Property(@Nullable String name, @Nullable Classifier container) {
     // TODO verify that the container is also a NamespaceProvider
     super(name, container);
+  }
+
+  public Property(
+      @Nullable String name, @Nullable Classifier container, LionCore.Version lioncoreVersion) {
+    // TODO verify that the container is also a NamespaceProvider
+    super(name, container, lioncoreVersion);
   }
 
   public @Nullable DataType getType() {
@@ -90,10 +121,5 @@ public class Property extends Feature<Property> {
         + "type="
         + getType()
         + '}';
-  }
-
-  @Override
-  public Concept getClassifier() {
-    return LionCore.getProperty();
   }
 }

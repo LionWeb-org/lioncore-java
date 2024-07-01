@@ -7,7 +7,7 @@ import org.junit.Test;
 public class BuiltinIDsAndKeysTest {
 
   @Test
-  public void M3ElementsHasExpectedIDs() {
+  public void M3ElementsHasExpectedIDsForVersion2023_1() {
     Assert.assertEquals("-id-Concept", LionCore.getConcept().getID());
     Assert.assertEquals(
         "-id-Concept-abstract", LionCore.getConcept().getPropertyByName("abstract").getID());

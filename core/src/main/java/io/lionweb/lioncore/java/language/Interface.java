@@ -47,6 +47,10 @@ public class Interface extends Classifier<Interface> {
     super(null, name);
   }
 
+  public Interface(@Nullable String name, LionCore.Version lioncoreVersion) {
+    super(null, name, lioncoreVersion);
+  }
+
   public Interface(@Nullable String name, @Nonnull String id) {
     super(null, name, id);
   }

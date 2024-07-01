@@ -30,7 +30,7 @@ public class CorrespondanceWithDocumentationTest {
 
     Language deserializedLioncore = (Language) nodes.get(0);
     ModelComparator.ComparisonResult comparison =
-        new ModelComparator().compare(deserializedLioncore, LionCore.getInstance());
+        new ModelComparator().compare(deserializedLioncore, LionCore.getCurrentVersion());
     System.out.println("Differences " + comparison.getDifferences().size());
     for (String difference : comparison.getDifferences()) {
       System.out.println(" - " + difference);

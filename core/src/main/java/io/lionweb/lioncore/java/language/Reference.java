@@ -33,8 +33,16 @@ public class Reference extends Link<Reference> {
 
   public static Reference createOptional(
       @Nullable String name, @Nullable Classifier type, @Nonnull String id) {
+    return createOptional(name, type, id, LionCore.Version.CURRENT);
+  }
+
+  public static Reference createOptional(
+      @Nullable String name,
+      @Nullable Classifier type,
+      @Nonnull String id,
+      LionCore.Version lioncoreVersion) {
     Objects.requireNonNull(id, "id should not be null");
-    Reference reference = new Reference(name, id);
+    Reference reference = new Reference(name, id, lioncoreVersion);
     reference.setOptional(true);
     reference.setMultiple(false);
     reference.setType(type);
@@ -59,6 +67,19 @@ public class Reference extends Link<Reference> {
     return reference;
   }
 
+  public static Reference createRequired(
+      @Nullable String name,
+      @Nullable Classifier type,
+      @Nonnull String id,
+      LionCore.Version lioncoreVersion) {
+    Objects.requireNonNull(id, "id should not be null");
+    Reference reference = new Reference(name, id, lioncoreVersion);
+    reference.setOptional(false);
+    reference.setMultiple(false);
+    reference.setType(type);
+    return reference;
+  }
+
   public static Reference createMultiple(@Nullable String name, @Nullable Classifier type) {
     Reference reference = new Reference(name);
     reference.setOptional(true);
@@ -68,9 +89,26 @@ public class Reference extends Link<Reference> {
   }
 
   public static Reference createMultiple(
+      @Nullable String name, @Nullable Classifier type, LionCore.Version lioncoreVersion) {
+    Reference reference = new Reference(name, lioncoreVersion);
+    reference.setOptional(true);
+    reference.setMultiple(true);
+    reference.setType(type);
+    return reference;
+  }
+
+  public static Reference createMultiple(
       @Nullable String name, @Nullable Classifier type, @Nonnull String id) {
+    return createMultiple(name, type, id, LionCore.Version.CURRENT);
+  }
+
+  public static Reference createMultiple(
+      @Nullable String name,
+      @Nullable Classifier type,
+      @Nonnull String id,
+      LionCore.Version lioncoreVersion) {
     Objects.requireNonNull(id, "id should not be null");
-    Reference reference = new Reference(name, id);
+    Reference reference = new Reference(name, id, lioncoreVersion);
     reference.setOptional(true);
     reference.setMultiple(true);
     reference.setType(type);
@@ -99,8 +137,16 @@ public class Reference extends Link<Reference> {
     super(name, (Classifier) null);
   }
 
+  public Reference(@Nullable String name, LionCore.Version lioncoreVersion) {
+    super(name, (Classifier) null, lioncoreVersion);
+  }
+
   public Reference(@Nullable String name, @Nonnull String id) {
     super(name, id);
+  }
+
+  public Reference(@Nullable String name, @Nonnull String id, LionCore.Version lioncoreVersion) {
+    super(name, id, lioncoreVersion);
   }
 
   @Override

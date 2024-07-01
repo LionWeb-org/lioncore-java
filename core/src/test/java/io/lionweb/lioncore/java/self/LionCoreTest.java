@@ -13,7 +13,7 @@ public class LionCoreTest {
 
   @Test
   public void lionCoreIsValid() {
-    ValidationResult vr = new LanguageValidator().validate(LionCore.getInstance());
+    ValidationResult vr = new LanguageValidator().validate(LionCore.getCurrentVersion());
     if (!vr.isSuccessful()) {
       throw new RuntimeException("LionCore Language is not valid: " + vr);
     }

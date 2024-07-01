@@ -2,6 +2,7 @@ package io.lionweb.lioncore.java.language;
 
 import io.lionweb.lioncore.java.model.ReferenceValue;
 import io.lionweb.lioncore.java.model.impl.M3Node;
+import io.lionweb.lioncore.java.self.LionCore;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -29,9 +30,21 @@ public abstract class Link<T extends M3Node> extends Feature<T> {
     setMultiple(false);
   }
 
+  public Link(@Nullable String name, @Nonnull String id, LionCore.Version lioncoreVersion) {
+    // TODO verify that the container is also a NamespaceProvider
+    super(name, id, lioncoreVersion);
+    setMultiple(false);
+  }
+
   public Link(@Nullable String name, @Nullable Classifier container) {
     // TODO verify that the container is also a NamespaceProvider
     super(name, container);
+    setMultiple(false);
+  }
+
+  public Link(
+      @Nullable String name, @Nullable Classifier container, LionCore.Version lioncoreVersion) {
+    super(name, container, lioncoreVersion);
     setMultiple(false);
   }
 

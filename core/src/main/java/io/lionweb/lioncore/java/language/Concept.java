@@ -2,6 +2,8 @@ package io.lionweb.lioncore.java.language;
 
 import io.lionweb.lioncore.java.model.ReferenceValue;
 import io.lionweb.lioncore.java.self.LionCore;
+import io.lionweb.lioncore.java.self.LionCore_2023_1;
+import io.lionweb.lioncore.java.self.LionCore_2024_1;
 import java.util.*;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -27,7 +29,11 @@ public class Concept extends Classifier<Concept> {
   //        another concept?
 
   public Concept() {
-    super();
+    this(LionCore.Version.CURRENT);
+  }
+
+  public Concept(LionCore.Version lioncoreVersion) {
+    super(lioncoreVersion);
     setAbstract(false);
     setPartition(false);
   }
@@ -55,6 +61,12 @@ public class Concept extends Classifier<Concept> {
 
   public Concept(@Nullable String name) {
     super(null, name);
+    setAbstract(false);
+    setPartition(false);
+  }
+
+  public Concept(@Nullable String name, LionCore.Version lioncoreVersion) {
+    super(null, name, lioncoreVersion);
     setAbstract(false);
     setPartition(false);
   }
@@ -122,6 +134,13 @@ public class Concept extends Classifier<Concept> {
 
   @Override
   public Concept getClassifier() {
-    return LionCore.getConcept();
+    switch (getLioncoreVersion()) {
+      case v2023_1:
+        return LionCore_2023_1.getConcept();
+      case v2024_1:
+        return LionCore_2024_1.getConcept();
+      default:
+        throw new IllegalStateException();
+    }
   }
 }

@@ -1,6 +1,7 @@
 package io.lionweb.lioncore.java.language;
 
 import io.lionweb.lioncore.java.model.impl.M3Node;
+import io.lionweb.lioncore.java.self.LionCore;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -21,15 +22,33 @@ public abstract class Feature<T extends M3Node> extends M3Node<T>
     implements NamespacedEntity, IKeyed<T> {
 
   public Feature() {
+    this(LionCore.Version.CURRENT);
+  }
+
+  public Feature(LionCore.Version lionCoreVersion) {
+    super(lionCoreVersion);
     setOptional(false);
   }
 
   public Feature(@Nullable String name, @Nonnull String id) {
-    this(name, null, id);
+    this(name, id, LionCore.Version.CURRENT);
+  }
+
+  public Feature(@Nullable String name, @Nonnull String id, LionCore.Version lioncoreVersion) {
+    this(name, null, id, lioncoreVersion);
     setOptional(false);
   }
 
   public Feature(@Nullable String name, @Nullable Classifier container, @Nonnull String id) {
+    this(name, container, id, LionCore.Version.CURRENT);
+  }
+
+  public Feature(
+      @Nullable String name,
+      @Nullable Classifier container,
+      @Nonnull String id,
+      LionCore.Version lioncoreVersion) {
+    super(lioncoreVersion);
     setOptional(false);
     Objects.requireNonNull(id, "id should not be null");
     this.setID(id);
@@ -40,6 +59,16 @@ public abstract class Feature<T extends M3Node> extends M3Node<T>
   }
 
   public Feature(@Nullable String name, @Nullable Classifier container) {
+    setOptional(false);
+    // TODO verify that the container is also a NamespaceProvider
+    // TODO enforce uniqueness of the name within the FeauturesContainer
+    setName(name);
+    setParent(container);
+  }
+
+  public Feature(
+      @Nullable String name, @Nullable Classifier container, LionCore.Version lioncoreVersion) {
+    super(lioncoreVersion);
     setOptional(false);
     // TODO verify that the container is also a NamespaceProvider
     // TODO enforce uniqueness of the name within the FeauturesContainer

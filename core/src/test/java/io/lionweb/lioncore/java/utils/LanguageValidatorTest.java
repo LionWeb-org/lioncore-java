@@ -205,7 +205,7 @@ public class LanguageValidatorTest {
   public void ensuringLionCoreIsValidated() {
     assertEquals(
         new HashSet<>(Arrays.asList()),
-        new LanguageValidator().validate(LionCore.getInstance()).getIssues());
+        new LanguageValidator().validate(LionCore.getCurrentVersion()).getIssues());
   }
 
   @Test

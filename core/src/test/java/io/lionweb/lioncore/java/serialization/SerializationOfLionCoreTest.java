@@ -28,7 +28,7 @@ public class SerializationOfLionCoreTest extends SerializationTest {
   public void serializeLionCoreToSerializedChunk() {
     JsonSerialization jsonSerialization = JsonSerialization.getStandardSerialization();
     SerializedChunk serializedChunk =
-        jsonSerialization.serializeTreeToSerializationBlock(LionCore.getInstance());
+        jsonSerialization.serializeTreeToSerializationBlock(LionCore.getCurrentVersion());
 
     assertEquals("2024.1", serializedChunk.getSerializationFormatVersion());
 
@@ -95,7 +95,8 @@ public class SerializationOfLionCoreTest extends SerializationTest {
     InputStream inputStream = this.getClass().getResourceAsStream("/serialization/lioncore.json");
     JsonElement serializedElement = JsonParser.parseReader(new InputStreamReader(inputStream));
     JsonSerialization jsonSerialization = JsonSerialization.getStandardSerialization();
-    JsonElement reserialized = jsonSerialization.serializeTreeToJsonElement(LionCore.getInstance());
+    JsonElement reserialized =
+        jsonSerialization.serializeTreeToJsonElement(LionCore.getCurrentVersion());
     assertEquivalentLionWebJson(
         serializedElement.getAsJsonObject(), reserialized.getAsJsonObject());
   }
@@ -137,11 +138,13 @@ public class SerializationOfLionCoreTest extends SerializationTest {
     InputStream inputStream = this.getClass().getResourceAsStream("/serialization/lioncore.json");
     JsonElement jsonElement = JsonParser.parseReader(new InputStreamReader(inputStream));
     JsonSerialization jsonSerialization = JsonSerialization.getBasicSerialization();
-    jsonSerialization.getInstanceResolver().addAll(LionCore.getInstance().thisAndAllDescendants());
+    jsonSerialization
+        .getInstanceResolver()
+        .addAll(LionCore.getCurrentVersion().thisAndAllDescendants());
     jsonSerialization
         .getInstanceResolver()
         .addAll(LionCoreBuiltins.getCurrentVersion().thisAndAllDescendants());
-    jsonSerialization.getClassifierResolver().registerLanguage(LionCore.getInstance());
+    jsonSerialization.getClassifierResolver().registerLanguage(LionCore.getCurrentVersion());
     jsonSerialization.getInstantiator().enableDynamicNodes();
     jsonSerialization
         .getPrimitiveValuesSerialization()
@@ -161,7 +164,7 @@ public class SerializationOfLionCoreTest extends SerializationTest {
     InputStream inputStream = this.getClass().getResourceAsStream("/serialization/lioncore.json");
     JsonElement jsonElement = JsonParser.parseReader(new InputStreamReader(inputStream));
     JsonSerialization jsonSerialization = JsonSerialization.getBasicSerialization();
-    jsonSerialization.getClassifierResolver().registerLanguage(LionCore.getInstance());
+    jsonSerialization.getClassifierResolver().registerLanguage(LionCore.getCurrentVersion());
     jsonSerialization
         .getPrimitiveValuesSerialization()
         .registerLionBuiltinsPrimitiveSerializersAndDeserializers();

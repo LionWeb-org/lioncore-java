@@ -1,11 +1,9 @@
 package io.lionweb.lioncore.java.model.impl;
 
-import io.lionweb.lioncore.java.language.Concept;
-import io.lionweb.lioncore.java.language.Containment;
-import io.lionweb.lioncore.java.language.Property;
-import io.lionweb.lioncore.java.language.Reference;
+import io.lionweb.lioncore.java.language.*;
 import io.lionweb.lioncore.java.model.Node;
 import io.lionweb.lioncore.java.model.ReferenceValue;
+import io.lionweb.lioncore.java.self.LionCore;
 import java.util.*;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
@@ -23,6 +21,16 @@ public abstract class M3Node<T extends M3Node> extends AbstractClassifierInstanc
     implements Node {
   private String id;
   private Node parent;
+
+  private LionCore.Version lioncoreVersion;
+
+  public M3Node() {
+    this(LionCore.Version.CURRENT);
+  }
+
+  public M3Node(LionCore.Version lioncoreVersion) {
+    this.lioncoreVersion = lioncoreVersion;
+  }
 
   // We use as keys of these maps the name of the features and not the IDs.
   // The reason why we do that, is to avoid a circular dependency as the classes for defining
@@ -63,7 +71,8 @@ public abstract class M3Node<T extends M3Node> extends AbstractClassifierInstanc
   @Override
   public Object getPropertyValue(Property property) {
     if (!getClassifier().allProperties().contains(property)) {
-      throw new IllegalArgumentException("Property not belonging to this concept: " + property);
+      throw new IllegalArgumentException(
+          "Property not belonging to this concept: " + property + ". Concept: " + getClassifier());
     }
     return propertyValues.get(property.getName());
   }
@@ -278,5 +287,22 @@ public abstract class M3Node<T extends M3Node> extends AbstractClassifierInstanc
     } else {
       referenceValues.put(linkName, new ArrayList(Arrays.asList(value)));
     }
+  }
+
+  @Override
+  public Concept getClassifier() {
+    Language language =
+        LionCore.allVersions().stream()
+            .filter(l -> l.getVersion().equals(getLioncoreVersion().getValue()))
+            .findFirst()
+            .orElseThrow(() -> new RuntimeException());
+    return language.getConceptByName(this.getClass().getSimpleName());
+  }
+
+  public LionCore.Version getLioncoreVersion() {
+    if (this.lioncoreVersion == null) {
+      throw new IllegalStateException();
+    }
+    return this.lioncoreVersion;
   }
 }

@@ -63,7 +63,12 @@ public class Containment extends Link<Containment> {
   }
 
   public static Containment createMultiple(@Nullable String name, @Nullable Classifier type) {
-    Containment containment = new Containment(name);
+    return createMultiple(name, type, LionCore.Version.CURRENT);
+  }
+
+  public static Containment createMultiple(
+      @Nullable String name, @Nullable Classifier type, LionCore.Version lioncoreVersion) {
+    Containment containment = new Containment(name, lioncoreVersion);
     containment.setOptional(true);
     containment.setMultiple(true);
     containment.setType(type);
@@ -72,8 +77,16 @@ public class Containment extends Link<Containment> {
 
   public static Containment createMultiple(
       @Nullable String name, @Nullable Classifier type, @Nonnull String id) {
+    return createMultiple(name, type, id, LionCore.Version.CURRENT);
+  }
+
+  public static Containment createMultiple(
+      @Nullable String name,
+      @Nullable Classifier type,
+      @Nonnull String id,
+      LionCore.Version lioncoreVersion) {
     Objects.requireNonNull(id, "id should not be null");
-    Containment containment = new Containment(name, id);
+    Containment containment = new Containment(name, id, lioncoreVersion);
     containment.setOptional(true);
     containment.setMultiple(true);
     containment.setType(type);
@@ -102,12 +115,15 @@ public class Containment extends Link<Containment> {
     super(name, (Classifier) null);
   }
 
+  public Containment(String name, LionCore.Version lioncoreVersion) {
+    super(name, (Classifier) null, lioncoreVersion);
+  }
+
   public Containment(String name, @Nonnull String id) {
     super(name, id);
   }
 
-  @Override
-  public Concept getClassifier() {
-    return LionCore.getContainment();
+  public Containment(String name, @Nonnull String id, LionCore.Version lioncoreVersion) {
+    super(name, id, lioncoreVersion);
   }
 }

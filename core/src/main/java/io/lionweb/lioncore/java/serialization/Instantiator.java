@@ -6,6 +6,7 @@ import io.lionweb.lioncore.java.model.Node;
 import io.lionweb.lioncore.java.model.impl.DynamicAnnotationInstance;
 import io.lionweb.lioncore.java.model.impl.DynamicNode;
 import io.lionweb.lioncore.java.self.LionCore;
+import io.lionweb.lioncore.java.self.LionCore_2023_1;
 import io.lionweb.lioncore.java.serialization.data.SerializedClassifierInstance;
 import java.util.HashMap;
 import java.util.Map;
@@ -111,6 +112,48 @@ public class Instantiator {
             new EnumerationLiteral().setID(serializedNode.getID()));
     customDeserializers.put(
         LionCore.getAnnotation().getID(),
+        (concept, serializedNode, deserializedNodesByID, propertiesValues) ->
+            new Annotation().setID(serializedNode.getID()));
+
+    // Support LionCore 2023.1
+    customDeserializers.put(
+        LionCore_2023_1.getLanguage().getID(),
+        (concept, serializedNode, deserializedNodesByID, propertiesValues) ->
+            new Language().setID(serializedNode.getID()));
+    customDeserializers.put(
+        LionCore_2023_1.getConcept().getID(),
+        (concept, serializedNode, deserializedNodesByID, propertiesValues) ->
+            new Concept().setID(serializedNode.getID()));
+    customDeserializers.put(
+        LionCore_2023_1.getInterface().getID(),
+        (concept, serializedNode, deserializedNodesByID, propertiesValues) ->
+            new Interface().setID(serializedNode.getID()));
+    customDeserializers.put(
+        LionCore_2023_1.getProperty().getID(),
+        (concept, serializedNode, deserializedNodesByID, propertiesValues) ->
+            new Property(null, null, serializedNode.getID()));
+    customDeserializers.put(
+        LionCore_2023_1.getReference().getID(),
+        (concept, serializedNode, deserializedNodesByID, propertiesValues) ->
+            new Reference(null, serializedNode.getID()));
+    customDeserializers.put(
+        LionCore_2023_1.getContainment().getID(),
+        (concept, serializedNode, deserializedNodesByID, propertiesValues) ->
+            new Containment(null, serializedNode.getID()));
+    customDeserializers.put(
+        LionCore_2023_1.getPrimitiveType().getID(),
+        (concept, serializedNode, deserializedNodesByID, propertiesValues) ->
+            new PrimitiveType(serializedNode.getID()));
+    customDeserializers.put(
+        LionCore_2023_1.getEnumeration().getID(),
+        (concept, serializedNode, deserializedNodesByID, propertiesValues) ->
+            new Enumeration().setID(serializedNode.getID()));
+    customDeserializers.put(
+        LionCore_2023_1.getEnumerationLiteral().getID(),
+        (concept, serializedNode, deserializedNodesByID, propertiesValues) ->
+            new EnumerationLiteral().setID(serializedNode.getID()));
+    customDeserializers.put(
+        LionCore_2023_1.getAnnotation().getID(),
         (concept, serializedNode, deserializedNodesByID, propertiesValues) ->
             new Annotation().setID(serializedNode.getID()));
   }

@@ -1,6 +1,7 @@
 package io.lionweb.lioncore.java.language;
 
 import io.lionweb.lioncore.java.model.impl.M3Node;
+import io.lionweb.lioncore.java.self.LionCore;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -18,7 +19,13 @@ import javax.annotation.Nullable;
 public abstract class LanguageEntity<T extends M3Node> extends M3Node<T>
     implements NamespacedEntity, IKeyed<T> {
 
-  public LanguageEntity() {}
+  public LanguageEntity() {
+    this(LionCore.Version.CURRENT);
+  }
+
+  public LanguageEntity(LionCore.Version lioncoreVersion) {
+    super(lioncoreVersion);
+  }
 
   public LanguageEntity(@Nullable Language language, @Nullable String name, @Nonnull String id) {
     this(language, name);
@@ -26,6 +33,12 @@ public abstract class LanguageEntity<T extends M3Node> extends M3Node<T>
   }
 
   public LanguageEntity(@Nullable Language language, @Nullable String name) {
+    this(language, name, LionCore.Version.CURRENT);
+  }
+
+  public LanguageEntity(
+      @Nullable Language language, @Nullable String name, LionCore.Version lioncoreVersion) {
+    super(lioncoreVersion);
     // TODO enforce uniqueness of the name within the Language
     this.setName(name);
     if (language != null) {

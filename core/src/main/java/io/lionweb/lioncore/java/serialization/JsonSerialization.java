@@ -93,13 +93,14 @@ public class JsonSerialization {
   /** This has specific support for LionCore or LionCoreBuiltins. */
   public static JsonSerialization getStandardSerialization() {
     JsonSerialization jsonSerialization = new JsonSerialization();
-    jsonSerialization.classifierResolver.registerLanguage(LionCore.getInstance());
+    LionCore.allVersions().forEach(l -> jsonSerialization.classifierResolver.registerLanguage(l));
+
     jsonSerialization.instantiator.registerLionCoreCustomDeserializers();
     jsonSerialization.primitiveValuesSerialization
         .registerLionBuiltinsPrimitiveSerializersAndDeserializers();
-    jsonSerialization.instanceResolver.addAll(LionCore.getInstance().thisAndAllDescendants());
-    jsonSerialization.instanceResolver.addAll(
-        LionCoreBuiltins.getVersion2023_1().getInstance().thisAndAllDescendants());
+    jsonSerialization.instanceResolver.addAll(LionCore.getCurrentVersion().thisAndAllDescendants());
+    LionCoreBuiltins.allVersions()
+        .forEach(l -> jsonSerialization.instanceResolver.addAll(l.thisAndAllDescendants()));
     return jsonSerialization;
   }
 
