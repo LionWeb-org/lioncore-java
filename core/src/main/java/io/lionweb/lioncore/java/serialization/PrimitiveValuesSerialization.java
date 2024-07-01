@@ -88,7 +88,7 @@ public class PrimitiveValuesSerialization {
         });
     primitiveDeserializers.put(LionCoreBuiltins.getString().getID(), s -> s);
     primitiveDeserializers.put(
-        LionCoreBuiltins.getJSON().getID(),
+        LionCoreBuiltins.getVersion2023_1().getJSON().getID(),
         (PrimitiveDeserializer<JsonElement>)
             serializedValue -> {
               if (serializedValue == null) {
@@ -110,7 +110,7 @@ public class PrimitiveValuesSerialization {
         LionCoreBuiltins.getBoolean().getID(),
         (PrimitiveSerializer<Boolean>) value -> Boolean.toString(value));
     primitiveSerializers.put(
-        LionCoreBuiltins.getJSON().getID(),
+        LionCoreBuiltins.getVersion2023_1().getJSON().getID(),
         (PrimitiveSerializer<JsonElement>) value -> new Gson().toJson(value));
     primitiveSerializers.put(
         LionCoreBuiltins.getString().getID(), (PrimitiveSerializer<String>) value -> value);

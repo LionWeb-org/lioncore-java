@@ -209,10 +209,11 @@ public class LanguageValidatorTest {
   }
 
   @Test
-  public void ensuringLionCoreBuiltinsIsValidated() {
-    assertEquals(
-        new HashSet<>(Arrays.asList()),
-        new LanguageValidator().validate(LionCoreBuiltins.getInstance()).getIssues());
+  public void ensuringAllVersionsOfLionCoreBuiltinsIsValidated() {
+    for (Language builtins : LionCoreBuiltins.allVersions()) {
+      assertEquals(
+          new HashSet<>(Arrays.asList()), new LanguageValidator().validate(builtins).getIssues());
+    }
   }
 
   @Test

@@ -23,7 +23,9 @@ public class MyNodeWithProperties extends DynamicNode {
           .addFeature(
               Property.createOptional("p3", LionCoreBuiltins.getString()).setID("p3").setKey("p3"))
           .addFeature(
-              Property.createOptional("p4", LionCoreBuiltins.getJSON()).setID("p4").setKey("p4"))
+              Property.createOptional("p4", LionCoreBuiltins.getVersion2023_1().getJSON())
+                  .setID("p4")
+                  .setKey("p4"))
           .setParent(LANGUAGE);
 
   static {

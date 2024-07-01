@@ -1,68 +1,42 @@
 package io.lionweb.lioncore.java.language;
 
-import io.lionweb.lioncore.java.serialization.JsonSerialization;
+import java.util.Arrays;
+import java.util.List;
 
-public class LionCoreBuiltins extends Language {
-  private static final LionCoreBuiltins INSTANCE = new LionCoreBuiltins();
-
-  /** This is private to prevent instantiation and enforce the Singleton pattern. */
-  private LionCoreBuiltins() {
-    super("LionCore_builtins");
-    setID("LionCore-builtins");
-    setKey("LionCore-builtins");
-    // TODO we should move to the current version
-    setVersion(JsonSerialization.SERIALIZATION_FORMAT_2023_1);
-    PrimitiveType string = new PrimitiveType(this, "String");
-    new PrimitiveType(this, "Boolean");
-    new PrimitiveType(this, "Integer");
-    new PrimitiveType(this, "JSON");
-
-    Concept node = new Concept(this, "Node").setID("LionCore-builtins-Node");
-    node.setAbstract(true);
-
-    Interface iNamed = new Interface(this, "INamed").setID("LionCore-builtins-INamed");
-    iNamed.addFeature(
-        Property.createRequired("name", string)
-            .setID("LionCore-builtins-INamed-name")
-            .setKey("LionCore-builtins-INamed-name"));
-
-    this.getElements()
-        .forEach(
-            e -> {
-              if (e.getID() == null) {
-                e.setID("LionCore-builtins-" + e.getName());
-              }
-              if (e.getKey() == null) {
-                e.setKey("LionCore-builtins-" + e.getName());
-              }
-            });
+public class LionCoreBuiltins {
+  public static LionCoreBuiltins_2024_1 getCurrentVersion() {
+    return getVersion2024_1();
   }
 
-  public static LionCoreBuiltins getInstance() {
-    return INSTANCE;
+  public static List<Language> allVersions() {
+    return Arrays.asList(getVersion2023_1(), getVersion2024_1());
+  }
+
+  public static LionCoreBuiltins_2023_1 getVersion2023_1() {
+    return LionCoreBuiltins_2023_1.getInstance();
+  }
+
+  public static LionCoreBuiltins_2024_1 getVersion2024_1() {
+    return LionCoreBuiltins_2024_1.getInstance();
   }
 
   public static PrimitiveType getString() {
-    return INSTANCE.getPrimitiveTypeByName("String");
+    return getCurrentVersion().getPrimitiveTypeByName("String");
   }
 
   public static PrimitiveType getInteger() {
-    return INSTANCE.getPrimitiveTypeByName("Integer");
+    return getCurrentVersion().getPrimitiveTypeByName("Integer");
   }
 
   public static PrimitiveType getBoolean() {
-    return INSTANCE.getPrimitiveTypeByName("Boolean");
-  }
-
-  public static PrimitiveType getJSON() {
-    return INSTANCE.getPrimitiveTypeByName("JSON");
+    return getCurrentVersion().getPrimitiveTypeByName("Boolean");
   }
 
   public static Interface getINamed() {
-    return INSTANCE.getInterfaceByName("INamed");
+    return getCurrentVersion().getInterfaceByName("INamed");
   }
 
   public static Concept getNode() {
-    return INSTANCE.getConceptByName("Node");
+    return getCurrentVersion().getConceptByName("Node");
   }
 }

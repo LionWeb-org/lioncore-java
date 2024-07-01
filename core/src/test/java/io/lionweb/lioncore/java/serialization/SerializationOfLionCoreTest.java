@@ -140,7 +140,7 @@ public class SerializationOfLionCoreTest extends SerializationTest {
     jsonSerialization.getInstanceResolver().addAll(LionCore.getInstance().thisAndAllDescendants());
     jsonSerialization
         .getInstanceResolver()
-        .addAll(LionCoreBuiltins.getInstance().thisAndAllDescendants());
+        .addAll(LionCoreBuiltins.getCurrentVersion().thisAndAllDescendants());
     jsonSerialization.getClassifierResolver().registerLanguage(LionCore.getInstance());
     jsonSerialization.getInstantiator().enableDynamicNodes();
     jsonSerialization

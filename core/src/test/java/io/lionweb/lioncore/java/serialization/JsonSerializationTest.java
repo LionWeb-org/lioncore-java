@@ -770,7 +770,7 @@ public class JsonSerializationTest extends SerializationTest {
 
     assertEquals(2, serializedChunk.getLanguages().size());
     assertSerializedChunkContainsLanguage(serializedChunk, l);
-    assertSerializedChunkContainsLanguage(serializedChunk, LionCoreBuiltins.getInstance());
+    assertSerializedChunkContainsLanguage(serializedChunk, LionCoreBuiltins.getCurrentVersion());
   }
 
   private void assertSerializedChunkContainsLanguage(

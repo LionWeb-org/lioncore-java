@@ -42,6 +42,10 @@ import javax.annotation.Nullable;
 public class JsonSerialization {
   public static final String DEFAULT_SERIALIZATION_FORMAT = BuildConfig.CURRENT_SPECS_VERSION;
   public static final String SERIALIZATION_FORMAT_2023_1 = "2023.1";
+  // At this time, this has the same value as DEFAULT_SERIALIZATION_FORMAT, but in some cases
+  // we want to refer to this specific version and not to the latest one, that for now happen
+  // to be this one
+  public static final String SERIALIZATION_FORMAT_2024_1 = "2024.1";
   public static final Set<String> SUPPORTED_FORMATS =
       new HashSet<>(Arrays.asList(DEFAULT_SERIALIZATION_FORMAT, SERIALIZATION_FORMAT_2023_1));
 
@@ -95,7 +99,7 @@ public class JsonSerialization {
         .registerLionBuiltinsPrimitiveSerializersAndDeserializers();
     jsonSerialization.instanceResolver.addAll(LionCore.getInstance().thisAndAllDescendants());
     jsonSerialization.instanceResolver.addAll(
-        LionCoreBuiltins.getInstance().thisAndAllDescendants());
+        LionCoreBuiltins.getVersion2023_1().getInstance().thisAndAllDescendants());
     return jsonSerialization;
   }
 
