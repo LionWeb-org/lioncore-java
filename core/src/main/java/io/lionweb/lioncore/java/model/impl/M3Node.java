@@ -5,6 +5,7 @@ import io.lionweb.lioncore.java.language.Concept;
 import io.lionweb.lioncore.java.language.Containment;
 import io.lionweb.lioncore.java.language.Property;
 import io.lionweb.lioncore.java.language.Reference;
+import io.lionweb.lioncore.java.model.ClassifierInstance;
 import io.lionweb.lioncore.java.model.Node;
 import io.lionweb.lioncore.java.model.ReferenceValue;
 import java.util.*;
@@ -124,7 +125,7 @@ public abstract class M3Node<T extends M3Node> extends AbstractClassifierInstanc
   }
 
   @Override
-  public void addChild(@Nonnull Containment containment, @Nonnull Node child) {
+  public void addChild(@Nonnull Containment containment, @Nonnull ClassifierInstance<?> child) {
     Objects.requireNonNull(containment);
     Objects.requireNonNull(child);
     if (containment.isMultiple()) {
@@ -135,7 +136,7 @@ public abstract class M3Node<T extends M3Node> extends AbstractClassifierInstanc
   }
 
   @Override
-  public void removeChild(@Nonnull Node child) {
+  public void removeChild(@Nonnull ClassifierInstance<?> child) {
     Objects.requireNonNull(child);
     throw new UnsupportedOperationException();
   }
@@ -242,7 +243,7 @@ public abstract class M3Node<T extends M3Node> extends AbstractClassifierInstanc
    * has been built, therefore we cannot look for the definition of the features to verify they
    * exist. We instead just trust a link with that name to exist.
    */
-  private void setContainmentSingleValue(String linkName, Node value) {
+  private void setContainmentSingleValue(String linkName, ClassifierInstance<?> value) {
     List<Node> prevValue = containmentValues.get(linkName);
     if (prevValue != null) {
       List<Node> copy = new LinkedList<>(prevValue);
@@ -274,16 +275,20 @@ public abstract class M3Node<T extends M3Node> extends AbstractClassifierInstanc
    *
    * @return return true if the addition produced a change
    */
-  protected boolean addContainmentMultipleValue(@Nonnull String linkName, Node value) {
+  protected boolean addContainmentMultipleValue(
+      @Nonnull String linkName, ClassifierInstance<?> value) {
     if (value == null) {
       return false;
+    }
+    if (!(value instanceof Node)) {
+      throw new IllegalArgumentException("A Node can contain only Nodes");
     }
     if (getContainmentMultipleValue(linkName).contains(value)) {
       return false;
     }
     ((M3Node) value).setParent(this);
     if (containmentValues.containsKey(linkName)) {
-      containmentValues.get(linkName).add(value);
+      containmentValues.get(linkName).add((Node) value);
     } else {
       containmentValues.put(linkName, new ArrayList(Arrays.asList(value)));
     }

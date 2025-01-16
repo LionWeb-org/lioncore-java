@@ -1,5 +1,6 @@
 package io.lionweb.lioncore.java.utils;
 
+import io.lionweb.lioncore.java.model.ClassifierInstance;
 import io.lionweb.lioncore.java.model.Node;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,7 +22,8 @@ public class ValidationResult {
     return this;
   }
 
-  public <S extends Node> ValidationResult checkForError(boolean check, String message, S subject) {
+  public <S extends ClassifierInstance<?>> ValidationResult checkForError(
+      boolean check, String message, S subject) {
     if (check) {
       issues.add(new Issue(IssueSeverity.Error, message, subject));
     }

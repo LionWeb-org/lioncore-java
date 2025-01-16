@@ -23,7 +23,7 @@ public interface HasFeatureValues {
    * relation specified.
    */
   @Nonnull
-  List<? extends Node> getChildren(@Nonnull Containment containment);
+  List<? extends ClassifierInstance<?>> getChildren(@Nonnull Containment containment);
 
   /**
    * Add a child to the specified list of children associated with the given Containment relation.
@@ -33,14 +33,14 @@ public interface HasFeatureValues {
    * <p>If the child has not a Concept compatible with the target of the Containement, the exception
    * IllegalArgumentException will be thrown.
    */
-  void addChild(@Nonnull Containment containment, @Nonnull Node child);
+  void addChild(@Nonnull Containment containment, @Nonnull ClassifierInstance<?> child);
 
   /**
    * Remove the given child from the list of children associated with the Node, making it a dangling
    * Node. If the specified Node is not currently a child of this Node the exception
    * IllegalArgumentException will be thrown.
    */
-  void removeChild(@Nonnull Node node);
+  void removeChild(@Nonnull ClassifierInstance<?> node);
 
   /**
    * Remove the child at the given index, considering the children under the given containment.

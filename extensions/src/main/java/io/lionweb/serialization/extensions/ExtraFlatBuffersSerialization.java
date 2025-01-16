@@ -7,7 +7,6 @@ import io.lionweb.lioncore.java.language.Property;
 import io.lionweb.lioncore.java.language.Reference;
 import io.lionweb.lioncore.java.model.AnnotationInstance;
 import io.lionweb.lioncore.java.model.ClassifierInstance;
-import io.lionweb.lioncore.java.model.Node;
 import io.lionweb.lioncore.java.model.ReferenceValue;
 import io.lionweb.lioncore.java.serialization.FlatBuffersSerialization;
 import io.lionweb.lioncore.java.serialization.data.MetaPointer;
@@ -95,10 +94,10 @@ public class ExtraFlatBuffersSerialization extends FlatBuffersSerialization {
         contOffsets = new int[containments.size()];
         int fi = 0;
         for (Containment containment : containments) {
-          List<? extends Node> children = node.getChildren(containment);
+          List<? extends ClassifierInstance<?>> children = node.getChildren(containment);
           int[] childOffsets = new int[children.size()];
           int ci = 0;
-          for (Node child : children) {
+          for (ClassifierInstance<?> child : children) {
             childOffsets[ci] = builder.createSharedString(child.getID());
             ci++;
           }

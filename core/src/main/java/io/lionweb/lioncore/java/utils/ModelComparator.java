@@ -167,6 +167,22 @@ public class ModelComparator {
     }
   }
 
+  public ComparisonResult compare(
+      ClassifierInstance<?> nodeA,
+      ClassifierInstance<?> nodeB,
+      ComparisonResult comparisonResult,
+      String context) {
+    if (nodeA instanceof Node && nodeB instanceof Node) {
+      compare((Node) nodeA, (Node) nodeB, comparisonResult, context);
+      return comparisonResult;
+    } else if (nodeA instanceof AnnotationInstance && nodeB instanceof AnnotationInstance) {
+      compare((AnnotationInstance) nodeA, (AnnotationInstance) nodeB, comparisonResult, context);
+      return comparisonResult;
+    } else {
+      return new ComparisonResult().markIncompatible();
+    }
+  }
+
   private void compareProperties(
       Classifier<?> concept,
       ClassifierInstance<?> nodeA,
@@ -229,8 +245,8 @@ public class ModelComparator {
       ComparisonResult comparisonResult,
       String context) {
     for (Containment containment : concept.allContainments()) {
-      List<? extends Node> valueA = nodeA.getChildren(containment);
-      List<? extends Node> valueB = nodeB.getChildren(containment);
+      List<? extends ClassifierInstance<?>> valueA = nodeA.getChildren(containment);
+      List<? extends ClassifierInstance<?>> valueB = nodeB.getChildren(containment);
       if (valueA.size() != valueB.size()) {
         comparisonResult.markDifferentNumberOfChildren(
             context, nodeA.getID(), containment.qualifiedName(), valueA.size(), valueB.size());

@@ -42,12 +42,12 @@ public class ProxyNode extends AbstractClassifierInstance<Concept> implements No
   }
 
   @Override
-  public void addChild(@Nonnull Containment containment, @Nonnull Node child) {
+  public void addChild(@Nonnull Containment containment, @Nonnull ClassifierInstance<?> child) {
     throw cannotDoBecauseProxy();
   }
 
   @Override
-  public void removeChild(@Nonnull Node node) {
+  public void removeChild(@Nonnull ClassifierInstance<?> node) {
     throw cannotDoBecauseProxy();
   }
 

@@ -71,9 +71,9 @@ public class ClassifierInstanceUtils {
 
   /** This return all the Nodes directly contained into this Node. */
   @Nonnull
-  public static List<Node> getChildren(@Nonnull ClassifierInstance<?> _this) {
+  public static List<ClassifierInstance<?>> getChildren(@Nonnull ClassifierInstance<?> _this) {
     Objects.requireNonNull(_this, "_this should not be null");
-    List<Node> allChildren = new LinkedList<>();
+    List<ClassifierInstance<?>> allChildren = new LinkedList<>();
     _this.getClassifier().allContainments().stream()
         .map(c -> _this.getChildren(c))
         .forEach(children -> allChildren.addAll(children));
@@ -81,7 +81,7 @@ public class ClassifierInstanceUtils {
   }
 
   @Nonnull
-  public static List<? extends Node> getChildrenByContainmentName(
+  public static List<? extends ClassifierInstance<?>> getChildrenByContainmentName(
       @Nonnull ClassifierInstance<?> _this, @Nonnull String containmentName) {
     Objects.requireNonNull(_this, "_this should not be null");
     Objects.requireNonNull(containmentName, "containmentName should not be null");
@@ -89,11 +89,12 @@ public class ClassifierInstanceUtils {
   }
 
   @Nullable
-  public static Node getOnlyChildByContainmentName(
+  public static ClassifierInstance<?> getOnlyChildByContainmentName(
       @Nonnull ClassifierInstance<?> _this, @Nonnull String containmentName) {
     Objects.requireNonNull(_this, "_this should not be null");
     Objects.requireNonNull(containmentName, "containmentName should not be null");
-    List<? extends Node> children = getChildrenByContainmentName(_this, containmentName);
+    List<? extends ClassifierInstance<?>> children =
+        getChildrenByContainmentName(_this, containmentName);
     if (children.size() > 1) {
       throw new IllegalStateException();
     } else if (children.isEmpty()) {
@@ -111,7 +112,7 @@ public class ClassifierInstanceUtils {
     if (containment.isMultiple()) {
       throw new IllegalArgumentException("Cannot invoke this method with a multiple containment");
     }
-    List<? extends Node> children = _this.getChildren(containment);
+    List<? extends ClassifierInstance<?>> children = _this.getChildren(containment);
     if (children.size() > 1) {
       throw new IllegalStateException(
           "The node should not have multiple children under containment " + containment);

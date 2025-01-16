@@ -5,6 +5,7 @@ import io.lionweb.lioncore.java.language.Containment;
 import io.lionweb.lioncore.java.language.Property;
 import io.lionweb.lioncore.java.language.Reference;
 import io.lionweb.lioncore.java.model.AnnotationInstance;
+import io.lionweb.lioncore.java.model.ClassifierInstance;
 import io.lionweb.lioncore.java.model.Node;
 import io.lionweb.lioncore.java.model.ReferenceValue;
 import io.lionweb.lioncore.java.model.impl.AbstractClassifierInstance;
@@ -84,12 +85,12 @@ public abstract class SimpleNode extends AbstractClassifierInstance<Concept> imp
   }
 
   @Override
-  public void addChild(@Nonnull Containment containment, @Nonnull Node child) {
+  public void addChild(@Nonnull Containment containment, @Nonnull ClassifierInstance<?> child) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void removeChild(Node node) {
+  public void removeChild(ClassifierInstance<?> node) {
     throw new UnsupportedOperationException();
   }
 

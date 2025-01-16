@@ -74,9 +74,9 @@ public abstract class AbstractClassifierInstance<T extends Classifier<T>>
   // Public methods for containments
 
   @Override
-  public void removeChild(Node child) {
+  public void removeChild(ClassifierInstance<?> child) {
     for (Containment containment : this.getClassifier().allContainments()) {
-      List<? extends Node> children = this.getChildren(containment);
+      List<? extends ClassifierInstance<?>> children = this.getChildren(containment);
       if (children.remove(child)) {
         if (child instanceof HasSettableParent) {
           ((HasSettableParent) child).setParent(null);
@@ -91,7 +91,7 @@ public abstract class AbstractClassifierInstance<T extends Classifier<T>>
     if (!getClassifier().allContainments().contains(containment)) {
       throw new IllegalArgumentException("Containment not belonging to this concept");
     }
-    List<? extends Node> children = this.getChildren(containment);
+    List<? extends ClassifierInstance<?>> children = this.getChildren(containment);
     if (children.size() > index) {
       children.remove(index);
     } else {

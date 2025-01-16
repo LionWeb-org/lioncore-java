@@ -1,15 +1,15 @@
 package io.lionweb.lioncore.java.utils;
 
-import io.lionweb.lioncore.java.model.Node;
+import io.lionweb.lioncore.java.model.ClassifierInstance;
 import java.util.Objects;
 
 public class Issue {
   private final String message;
   private final IssueSeverity severity;
 
-  private final Node subject;
+  private final ClassifierInstance<?> subject;
 
-  public Issue(IssueSeverity severity, String message, Node subject) {
+  public Issue(IssueSeverity severity, String message, ClassifierInstance<?> subject) {
     this.message = message;
     this.severity = severity;
     this.subject = subject;
@@ -25,7 +25,7 @@ public class Issue {
 
   // TODO once each element of the Language implement the Node interface this method could return a
   // Node
-  public Node getSubject() {
+  public ClassifierInstance<?> getSubject() {
     return subject;
   }
 

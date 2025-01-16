@@ -1,5 +1,6 @@
 package io.lionweb.lioncore.java.utils;
 
+import io.lionweb.lioncore.java.model.ClassifierInstance;
 import io.lionweb.lioncore.java.model.ClassifierInstanceUtils;
 import io.lionweb.lioncore.java.model.Node;
 import java.util.HashMap;
@@ -14,14 +15,15 @@ public class NodeTreeValidator extends Validator<Node> {
     return validationResult;
   }
 
-  private void validateNodeAndDescendants(Node node, ValidationResult validationResult) {
+  private void validateNodeAndDescendants(
+      ClassifierInstance<?> node, ValidationResult validationResult) {
     if (node.getID() != null) {
       // It does not make sense to make the same ID as null and invalid
       validationResult.checkForError(!CommonChecks.isValidID(node.getID()), "Invalid ID", node);
     }
-    if (node.isRoot()) {
+    if (node instanceof Node && ((Node) node).isRoot()) {
       validationResult.checkForError(
-          !node.getClassifier().isPartition(),
+          !((Node) node).getClassifier().isPartition(),
           "A root node should be an instance of a Partition concept",
           node);
     }

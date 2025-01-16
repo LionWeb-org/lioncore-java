@@ -3,6 +3,7 @@ package io.lionweb.lioncore.java.emf;
 import io.lionweb.lioncore.java.LionWebVersion;
 import io.lionweb.lioncore.java.emf.mapping.ConceptsToEClassesMapping;
 import io.lionweb.lioncore.java.language.Reference;
+import io.lionweb.lioncore.java.model.ClassifierInstance;
 import io.lionweb.lioncore.java.model.ClassifierInstanceUtils;
 import io.lionweb.lioncore.java.model.Node;
 import io.lionweb.lioncore.java.model.ReferenceValue;
@@ -41,7 +42,7 @@ public class EMFModelExporter extends AbstractEMFExporter {
   }
 
   /** This export the root received to a single EObject tree. */
-  public EObject exportTree(Node root, ReferencesPostponer referencesPostponer) {
+  public EObject exportTree(ClassifierInstance<?> root, ReferencesPostponer referencesPostponer) {
     EClass eClass = (EClass) conceptsToEClassesMapping.getCorrespondingEClass(root.getClassifier());
     if (eClass == null) {
       throw new IllegalStateException(
@@ -68,7 +69,7 @@ public class EMFModelExporter extends AbstractEMFExporter {
                 EReference eReference = (EReference) eStructuralFeature;
                 if (eReference.isContainment()) {
                   if (eReference.isMany()) {
-                    List<? extends Node> childrenInLW =
+                    List<? extends ClassifierInstance<?>> childrenInLW =
                         ClassifierInstanceUtils.getChildrenByContainmentName(
                             root, eReference.getName());
                     List<EObject> childrenInEmf =
@@ -77,7 +78,7 @@ public class EMFModelExporter extends AbstractEMFExporter {
                             .collect(Collectors.toList());
                     eObject.eSet(eReference, childrenInEmf);
                   } else {
-                    List<? extends Node> childrenInLW =
+                    List<? extends ClassifierInstance<?>> childrenInLW =
                         ClassifierInstanceUtils.getChildrenByContainmentName(
                             root, eReference.getName());
                     if (childrenInLW.size() > 1) {
@@ -112,10 +113,10 @@ public class EMFModelExporter extends AbstractEMFExporter {
 
   public static class ReferencesPostponer {
 
-    private final Map<Node, EObject> nodesToEObjects = new HashMap<>();
+    private final Map<ClassifierInstance<?>, EObject> nodesToEObjects = new HashMap<>();
     private final List<PostponedReference> postponedReferences = new ArrayList<>();
 
-    public void trackMapping(Node node, EObject eObject) {
+    public void trackMapping(ClassifierInstance<?> node, EObject eObject) {
       nodesToEObjects.put(node, eObject);
     }
 
@@ -166,16 +167,18 @@ public class EMFModelExporter extends AbstractEMFExporter {
           });
     }
 
-    public void recordReference(Node node, EObject eObject, EReference eReference) {
+    public void recordReference(
+        ClassifierInstance<?> node, EObject eObject, EReference eReference) {
       postponedReferences.add(new PostponedReference(node, eObject, eReference));
     }
 
     static class PostponedReference {
-      final Node node;
+      final ClassifierInstance<?> node;
       final EObject eObject;
       final EReference eReference;
 
-      public PostponedReference(Node node, EObject eObject, EReference eReference) {
+      public PostponedReference(
+          ClassifierInstance<?> node, EObject eObject, EReference eReference) {
         this.node = node;
         this.eObject = eObject;
         this.eReference = eReference;

@@ -1,6 +1,7 @@
 package io.lionweb.lioncore.java.model.impl;
 
 import io.lionweb.lioncore.java.language.*;
+import io.lionweb.lioncore.java.model.ClassifierInstance;
 import io.lionweb.lioncore.java.model.HasSettableParent;
 import io.lionweb.lioncore.java.model.Node;
 import java.util.*;
@@ -80,22 +81,24 @@ public class DynamicNode extends DynamicClassifierInstance<Concept>
   }
 
   private static boolean shallowContainmentsEquality(
-      Map<String, List<Node>> containments1, Map<String, List<Node>> containments2) {
+      Map<String, List<ClassifierInstance<?>>> containments1,
+      Map<String, List<ClassifierInstance<?>>> containments2) {
     if (!containments1.keySet().equals(containments2.keySet())) {
       return false;
     }
     return containments1.keySet().stream()
         .allMatch(
             containmentName -> {
-              List<Node> nodes1 = containments1.get(containmentName);
-              List<Node> nodes2 = containments2.get(containmentName);
+              List<ClassifierInstance<?>> nodes1 = containments1.get(containmentName);
+              List<ClassifierInstance<?>> nodes2 = containments2.get(containmentName);
               return nodes1.size() == nodes2.size()
                   && IntStream.range(0, nodes1.size())
                       .allMatch(i -> shallowNodeEquality(nodes1.get(i), nodes2.get(i)));
             });
   }
 
-  private static boolean shallowNodeEquality(@Nullable Node node1, @Nullable Node node2) {
+  private static boolean shallowNodeEquality(
+      @Nullable ClassifierInstance<?> node1, @Nullable ClassifierInstance<?> node2) {
     if (node1 == null && node2 == null) {
       return true;
     }

@@ -15,7 +15,7 @@ public abstract class DynamicClassifierInstance<T extends Classifier<T>>
   protected @Nullable String id;
 
   protected final Map<String, Object> propertyValues = new HashMap<>();
-  protected final Map<String, List<Node>> containmentValues = new HashMap<>();
+  protected final Map<String, List<ClassifierInstance<?>>> containmentValues = new HashMap<>();
 
   protected final Map<String, List<ReferenceValue>> referenceValues = new HashMap<>();
 
@@ -67,7 +67,7 @@ public abstract class DynamicClassifierInstance<T extends Classifier<T>>
   // Public methods for containments
 
   @Override
-  public List<Node> getChildren(@Nonnull Containment containment) {
+  public List<ClassifierInstance<?>> getChildren(@Nonnull Containment containment) {
     Objects.requireNonNull(containment, "Containment should not be null");
     Objects.requireNonNull(containment.getKey(), "Containment.key should not be null");
     if (!getClassifier().allContainments().contains(containment)) {
@@ -81,7 +81,7 @@ public abstract class DynamicClassifierInstance<T extends Classifier<T>>
   }
 
   @Override
-  public void addChild(@Nonnull Containment containment, @Nonnull Node child) {
+  public void addChild(@Nonnull Containment containment, @Nonnull ClassifierInstance<?> child) {
     Objects.requireNonNull(containment);
     Objects.requireNonNull(child);
     if (containment.isMultiple()) {
@@ -92,8 +92,8 @@ public abstract class DynamicClassifierInstance<T extends Classifier<T>>
   }
 
   @Override
-  public void removeChild(Node node) {
-    for (Map.Entry<String, List<Node>> entry : containmentValues.entrySet()) {
+  public void removeChild(ClassifierInstance<?> node) {
+    for (Map.Entry<String, List<ClassifierInstance<?>>> entry : containmentValues.entrySet()) {
       if (entry.getValue().contains(node)) {
         entry.getValue().remove(node);
         if (node instanceof HasSettableParent) {
@@ -113,7 +113,7 @@ public abstract class DynamicClassifierInstance<T extends Classifier<T>>
       throw new IllegalArgumentException("Containment not belonging to this concept");
     }
     if (containmentValues.containsKey(containment.getKey())) {
-      List<Node> children = containmentValues.get(containment.getKey());
+      List<ClassifierInstance<?>> children = containmentValues.get(containment.getKey());
       if (children.size() > index) {
         children.remove(index);
       } else {
@@ -213,7 +213,7 @@ public abstract class DynamicClassifierInstance<T extends Classifier<T>>
 
   // Private methods for containments
 
-  private void addContainment(Containment link, Node value) {
+  private void addContainment(Containment link, ClassifierInstance<?> value) {
     assert link.isMultiple();
     if (value instanceof HasSettableParent) {
       ((HasSettableParent) value).setParent((Node) this);
@@ -225,10 +225,10 @@ public abstract class DynamicClassifierInstance<T extends Classifier<T>>
     }
   }
 
-  private void setContainmentSingleValue(Containment link, Node value) {
-    List<Node> prevValue = containmentValues.get(link.getKey());
+  private void setContainmentSingleValue(Containment link, ClassifierInstance<?> value) {
+    List<ClassifierInstance<?>> prevValue = containmentValues.get(link.getKey());
     if (prevValue != null) {
-      List<Node> copy = new LinkedList<>(prevValue);
+      List<ClassifierInstance<?>> copy = new LinkedList<>(prevValue);
       copy.forEach(c -> this.removeChild(c));
     }
     if (value == null) {
